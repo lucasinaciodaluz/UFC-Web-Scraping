@@ -1,0 +1,135 @@
+2025-07-15 13:43:58,074 - main - INFO - Test log message
+2025-07-15 13:44:16,987 - main - INFO - Test log message
+2025-07-15 13:44:16,987 - main - ERROR - Test error message
+2025-07-15 13:45:07,573 - __main__ - INFO - === UFC Web Scraper Started ===
+2025-07-15 13:45:07,573 - __main__ - INFO - Phase 1: Getting URLs from ufcstats.com
+2025-07-15 13:45:07,573 - __main__ - INFO - Getting event URLs...
+2025-07-15 13:45:07,573 - scraper.get_urls - INFO - Starting to scrape event links from ufcstats.com
+2025-07-15 13:45:09,105 - scraper.get_urls - INFO - Got response with status code: 200
+2025-07-15 13:45:09,201 - scraper.get_urls - INFO - Found 739 event URLs
+2025-07-15 13:45:09,202 - scraper.get_urls - INFO - 739 event links successfully scraped
+2025-07-15 13:45:09,202 - __main__ - INFO - Event URLs completed
+2025-07-15 13:45:09,202 - __main__ - INFO - Getting fight URLs...
+2025-07-15 13:45:09,203 - scraper.get_urls - INFO - Loaded 739 event URLs from file
+2025-07-15 13:45:09,203 - scraper.get_urls - INFO - Starting to scrape fight links from ufcstats.com
+2025-07-15 13:52:44,377 - scraper.get_urls - INFO - 8104 fight links successfully scraped
+2025-07-15 13:52:44,378 - __main__ - INFO - Fight URLs completed
+2025-07-15 13:52:44,378 - __main__ - INFO - Getting fighter URLs...
+2025-07-15 13:52:44,378 - scraper.get_urls - INFO - Starting to scrape fighter links from ufcstats.com
+2025-07-15 13:53:37,632 - scraper.get_urls - INFO - Successfully retrieved 26 fighter pages
+2025-07-15 13:53:39,030 - scraper.get_urls - INFO - 4376 fighter links successfully scraped
+2025-07-15 13:53:39,031 - __main__ - INFO - Fighter URLs completed
+2025-07-15 13:53:39,031 - __main__ - INFO - Phase 2: Scraping data from URLs
+2025-07-15 13:53:39,031 - __main__ - INFO - Scraping events data...
+2025-07-15 13:53:39,032 - scraper.events - INFO - Loaded 739 event URLs from file
+2025-07-15 13:53:39,032 - scraper.events - INFO - Found 739 new events to scrape
+2025-07-15 13:53:39,032 - scraper.events - INFO - New File Created - ufc_event_data.csv
+2025-07-15 13:53:39,032 - scraper.events - INFO - Starting to scrape 739 event URLs...
+2025-07-15 13:59:00,541 - __main__ - INFO - === UFC Web Scraper Started ===
+2025-07-15 13:59:00,541 - __main__ - INFO - Phase 1: Getting URLs from ufcstats.com
+2025-07-15 13:59:00,541 - __main__ - INFO - Getting event URLs...
+2025-07-15 13:59:00,541 - scraper.get_urls - INFO - Starting to scrape event links from ufcstats.com
+2025-07-15 13:59:01,392 - scraper.get_urls - INFO - Got response with status code: 200
+2025-07-15 13:59:01,496 - scraper.get_urls - INFO - Found 739 event URLs
+2025-07-15 13:59:01,497 - scraper.get_urls - INFO - Saved 739 URLs to event_urls.csv
+2025-07-15 13:59:01,497 - scraper.get_urls - INFO - 739 event links successfully scraped
+2025-07-15 13:59:01,497 - __main__ - INFO - Event URLs completed
+2025-07-15 13:59:01,497 - __main__ - INFO - Getting fight URLs...
+2025-07-15 13:59:01,498 - scraper.get_urls - INFO - Loaded 739 event URLs from file
+2025-07-15 13:59:01,498 - scraper.get_urls - INFO - Starting to scrape fight links from ufcstats.com
+2025-07-15 13:59:01,498 - scraper.get_urls - INFO - Processing event 1/739 (0.1%)
+2025-07-15 14:00:53,145 - scraper.get_urls - INFO - Processing event 50/739 (6.8%)
+2025-07-15 14:02:31,039 - scraper.get_urls - INFO - Processing event 100/739 (13.5%)
+2025-07-15 14:02:31,489 - scraper.get_urls - INFO - Checkpoint saved: 100 processed, 1181 URLs collected
+2025-07-15 14:04:12,249 - scraper.get_urls - INFO - Processing event 150/739 (20.3%)
+2025-07-15 14:05:46,299 - scraper.get_urls - INFO - Processing event 200/739 (27.1%)
+2025-07-15 14:05:46,531 - scraper.get_urls - INFO - Checkpoint saved: 200 processed, 2354 URLs collected
+2025-07-15 14:07:19,285 - scraper.get_urls - INFO - Processing event 250/739 (33.8%)
+2025-07-15 14:08:52,770 - scraper.get_urls - INFO - Processing event 300/739 (40.6%)
+2025-07-15 14:08:53,252 - scraper.get_urls - INFO - Checkpoint saved: 300 processed, 3527 URLs collected
+2025-07-15 14:10:28,282 - scraper.get_urls - INFO - Processing event 350/739 (47.4%)
+2025-07-15 14:12:11,667 - scraper.get_urls - INFO - Processing event 400/739 (54.1%)
+2025-07-15 14:12:11,930 - scraper.get_urls - INFO - Checkpoint saved: 400 processed, 4687 URLs collected
+2025-07-15 14:13:40,590 - scraper.get_urls - INFO - Processing event 450/739 (60.9%)
+2025-07-15 14:15:10,952 - scraper.get_urls - INFO - Processing event 500/739 (67.7%)
+2025-07-15 14:15:11,182 - scraper.get_urls - INFO - Checkpoint saved: 500 processed, 5793 URLs collected
+2025-07-15 14:16:49,259 - scraper.get_urls - INFO - Processing event 550/739 (74.4%)
+2025-07-15 14:18:21,884 - scraper.get_urls - INFO - Processing event 600/739 (81.2%)
+2025-07-15 14:18:22,124 - scraper.get_urls - INFO - Checkpoint saved: 600 processed, 6875 URLs collected
+2025-07-15 14:19:49,899 - scraper.get_urls - INFO - Processing event 650/739 (88.0%)
+2025-07-15 14:21:27,483 - scraper.get_urls - INFO - Processing event 700/739 (94.7%)
+2025-07-15 14:21:27,895 - scraper.get_urls - INFO - Checkpoint saved: 700 processed, 7788 URLs collected
+2025-07-15 14:22:45,020 - scraper.get_urls - INFO - Checkpoint saved: 739 processed, 8104 URLs collected
+2025-07-15 14:22:45,028 - scraper.get_urls - INFO - Saved 8104 URLs to fight_urls.csv
+2025-07-15 14:22:45,028 - scraper.get_urls - INFO - 8104 fight links successfully scraped from 739 events
+2025-07-15 14:22:45,028 - __main__ - INFO - Fight URLs completed
+2025-07-15 14:22:45,028 - __main__ - INFO - Getting fighter URLs...
+2025-07-15 14:22:45,028 - scraper.get_urls - INFO - Starting to scrape fighter links from ufcstats.com
+2025-07-15 14:22:45,028 - scraper.get_urls - INFO - Requesting fighters page for letter: a (1/26)
+2025-07-15 14:22:47,802 - scraper.get_urls - INFO - Requesting fighters page for letter: b (2/26)
+2025-07-15 14:22:50,218 - scraper.get_urls - INFO - Requesting fighters page for letter: c (3/26)
+2025-07-15 14:22:52,723 - scraper.get_urls - INFO - Requesting fighters page for letter: d (4/26)
+2025-07-15 14:22:55,236 - scraper.get_urls - INFO - Requesting fighters page for letter: e (5/26)
+2025-07-15 14:22:57,473 - scraper.get_urls - INFO - Requesting fighters page for letter: f (6/26)
+2025-07-15 14:22:59,715 - scraper.get_urls - INFO - Requesting fighters page for letter: g (7/26)
+2025-07-15 14:23:02,150 - scraper.get_urls - INFO - Requesting fighters page for letter: h (8/26)
+2025-07-15 14:23:04,764 - scraper.get_urls - INFO - Requesting fighters page for letter: i (9/26)
+2025-07-15 14:23:06,771 - scraper.get_urls - INFO - Requesting fighters page for letter: j (10/26)
+2025-07-15 14:23:08,922 - scraper.get_urls - INFO - Requesting fighters page for letter: k (11/26)
+2025-07-15 14:23:11,076 - scraper.get_urls - INFO - Requesting fighters page for letter: l (12/26)
+2025-07-15 14:23:13,340 - scraper.get_urls - INFO - Requesting fighters page for letter: m (13/26)
+2025-07-15 14:23:16,023 - scraper.get_urls - INFO - Requesting fighters page for letter: n (14/26)
+2025-07-15 14:23:18,257 - scraper.get_urls - INFO - Requesting fighters page for letter: o (15/26)
+2025-07-15 14:23:20,380 - scraper.get_urls - INFO - Requesting fighters page for letter: p (16/26)
+2025-07-15 14:23:23,305 - scraper.get_urls - INFO - Requesting fighters page for letter: q (17/26)
+2025-07-15 14:23:25,282 - scraper.get_urls - INFO - Requesting fighters page for letter: r (18/26)
+2025-07-15 14:23:28,489 - scraper.get_urls - INFO - Requesting fighters page for letter: s (19/26)
+2025-07-15 14:23:31,349 - scraper.get_urls - INFO - Requesting fighters page for letter: t (20/26)
+2025-07-15 14:23:33,514 - scraper.get_urls - INFO - Requesting fighters page for letter: u (21/26)
+2025-07-15 14:23:35,516 - scraper.get_urls - INFO - Requesting fighters page for letter: v (22/26)
+2025-07-15 14:23:37,691 - scraper.get_urls - INFO - Requesting fighters page for letter: w (23/26)
+2025-07-15 14:23:40,111 - scraper.get_urls - INFO - Requesting fighters page for letter: x (24/26)
+2025-07-15 14:23:42,059 - scraper.get_urls - INFO - Requesting fighters page for letter: y (25/26)
+2025-07-15 14:23:44,175 - scraper.get_urls - INFO - Requesting fighters page for letter: z (26/26)
+2025-07-15 14:23:46,187 - scraper.get_urls - INFO - Successfully retrieved 26 fighter pages
+2025-07-15 14:23:47,606 - scraper.get_urls - INFO - Saved 4376 URLs to fighter_urls.csv
+2025-07-15 14:23:47,606 - scraper.get_urls - INFO - 4376 fighter links successfully scraped
+2025-07-15 14:23:47,608 - __main__ - INFO - Fighter URLs completed
+2025-07-15 14:23:47,608 - __main__ - INFO - Phase 2: Scraping data from URLs
+2025-07-15 14:23:47,608 - __main__ - INFO - Scraping events data...
+2025-07-15 14:23:47,609 - scraper.events - INFO - Loaded 739 event URLs from file
+2025-07-15 14:23:47,611 - scraper.events - INFO - Found 252 new events to scrape
+2025-07-15 14:23:47,611 - scraper.events - INFO - Scraping to Existing File - ufc_event_data.csv
+2025-07-15 14:23:47,611 - scraper.events - INFO - Starting to scrape 252 event URLs...
+2025-07-15 14:26:42,720 - scraper.events - INFO - 252/252 events successfully scraped
+2025-07-15 14:26:42,723 - __main__ - INFO - Events scraping completed
+2025-07-15 14:26:42,723 - __main__ - INFO - Scraping fights data...
+2025-07-15 14:26:42,730 - scraper.fights - INFO - Loaded 8104 fight URLs from file
+2025-07-15 14:26:42,730 - scraper.fights - INFO - Found 8104 new fights to scrape
+2025-07-15 14:26:42,731 - scraper.fights - INFO - New File Created - ufc_fight_data.csv
+2025-07-15 14:26:42,731 - scraper.fights - INFO - Starting to scrape 8104 fights...
+2025-07-15 15:09:55,652 - scraper.fights - ERROR - Request error for fight URL http://ufcstats.com/fight-details/071a1cd551b7b4d5: HTTPConnectionPool(host='ufcstats.com', port=80): Max retries exceeded with url: /fight-details/071a1cd551b7b4d5 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x151fb97f0>, 'Connection to ufcstats.com timed out. (connect timeout=None)'))
+2025-07-15 16:28:49,883 - scraper.fights - INFO - 8103/8104 fight links scraped successfully
+2025-07-15 16:28:49,884 - __main__ - INFO - Fights scraping completed
+2025-07-15 16:28:49,884 - __main__ - INFO - Scraping fight stats data...
+2025-07-15 16:28:49,885 - scraper.fightstats - INFO - New File Created - ufc_fight_stat_data.csv
+2025-07-15 16:28:49,891 - scraper.fightstats - INFO - Loaded 8104 fight URLs from file
+2025-07-15 16:28:49,891 - scraper.fightstats - INFO - Found 8104 new fights to scrape
+2025-07-15 16:28:49,891 - scraper.fightstats - INFO - Starting to scrape 8104 fight URLs...
+2025-07-15 18:36:24,318 - scraper.fightstats - INFO - 8104/8104 fights successfully scraped
+2025-07-15 18:36:24,322 - __main__ - INFO - Fight stats scraping completed
+2025-07-15 18:36:24,322 - __main__ - INFO - Scraping fighters data...
+2025-07-15 18:36:24,326 - scraper.fighters - INFO - Loaded 4376 fighter URLs from file
+2025-07-15 18:36:24,327 - scraper.fighters - INFO - Found 4376 new fighters to scrape
+2025-07-15 18:36:24,327 - scraper.fighters - INFO - New File Created - ufc_fighter_data.csv
+2025-07-15 18:36:24,327 - scraper.fighters - INFO - Starting to scrape 4376 fighter URLs...
+2025-07-15 19:21:00,942 - scraper.fighters - INFO - 4376/4376 fighters successfully scraped
+2025-07-15 19:21:00,943 - __main__ - INFO - Fighters scraping completed
+2025-07-15 19:21:00,944 - __main__ - INFO - Phase 3: Normalising tables
+2025-07-15 19:21:00,944 - scraper.normalise_tables - INFO - Loading CSV files into dataframes
+2025-07-15 19:21:01,016 - scraper.normalise_tables - INFO - Adding primary keys
+2025-07-15 19:21:01,024 - scraper.normalise_tables - INFO - Adding foreign keys
+2025-07-15 19:21:01,159 - scraper.normalise_tables - INFO - Saving normalized tables to CSV files
+2025-07-15 19:21:01,302 - scraper.normalise_tables - INFO - Tables normalised successfully
+2025-07-15 19:21:01,304 - __main__ - INFO - Table normalisation completed
+2025-07-15 19:21:01,304 - __main__ - INFO - === UFC Web Scraper Completed Successfully in 19320.76 seconds ===

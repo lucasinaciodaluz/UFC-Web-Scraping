@@ -6,6 +6,9 @@ import csv
 from string import ascii_lowercase
 import os
 from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 #Define paths for url folder and scraped files folder
 url_path = os.getcwd() + '/urls'
@@ -29,9 +32,9 @@ def create_csv():
                              'fighter_d',
                              'fighter_nc_dq',
                              'fighter_url'])
-        print('New File Created - ufc_fighter_data.csv')
+        logger.info('New File Created - ufc_fighter_data.csv')
     else:
-        print('Scraping to Existing File - ufc_fighter_data.csv')
+        logger.info('Scraping to Existing File - ufc_fighter_data.csv')
 
 #Ensure each url is only scraped once when script is run multiple times
 def filter_duplicate_urls(fighter_urls):
@@ -121,16 +124,19 @@ def scrape_fighters():
         with open(url_path + '/' + 'fighter_urls.csv','r') as fighters_csv:
             reader = csv.reader(fighters_csv)
             fighter_urls = [row[0] for row in reader]
+        logger.info(f'Loaded {len(fighter_urls)} fighter URLs from file')
     else:
-        print("Missing file: fighter_urls.csv - try running 'get_urls.get_fighter_urls()'")
+        logger.error("Missing file: fighter_urls.csv - try running 'get_urls.get_fighter_urls()'")
+        return
 
     #Remove urls that have been scraped already
     filter_duplicate_urls(fighter_urls)
     
     urls_to_scrape = len(fighter_urls)
+    logger.info(f'Found {urls_to_scrape} new fighters to scrape')
 
     if urls_to_scrape == 0:
-        print('Fighter data already scraped.')
+        logger.info('Fighter data already scraped.')
 
     else:
 
@@ -138,14 +144,15 @@ def scrape_fighters():
 
         urls_scraped = 0
         
-        print(f'Scraping {urls_to_scrape} fighters...')
+        logger.info(f'Starting to scrape {urls_to_scrape} fighter URLs...')
 
         with open(file_path + '/' + 'ufc_fighter_data.csv', 'a+') as ufc_fighters:
             writer = csv.writer(ufc_fighters)
 
             #Iterates through each url and scrapes key details
-            for url in fighter_urls:
+            for i, url in enumerate(fighter_urls, 1):
                 try:
+                    logger.debug(f'Processing fighter {i}/{urls_to_scrape}: {url}')
                     fighter_url = requests.get(url)
                     fighter_soup = bs4.BeautifulSoup(fighter_url.text, 'lxml')
                     
@@ -184,11 +191,18 @@ def scrape_fighters():
                                      url])
                     
                     urls_scraped += 1
+                    logger.debug(f'Successfully scraped fighter from: {url}')
                     
                 except IndexError as e:
-                    print(f"Error scraping fighter page: {url}")
-                    print(f"Error details: {e}")
+                    logger.error(f"IndexError scraping fighter page: {url} - {e}")
+                    continue
+                except requests.RequestException as e:
+                    logger.error(f"Request error for fighter: {url} - {e}")
+                    continue
+                except Exception as e:
+                    logger.error(f"Unexpected error scraping fighter: {url} - {e}")
+                    continue
 
 
-        print(f'{urls_scraped}/{urls_to_scrape} fighters scraped successfully')
+        logger.info(f'{urls_scraped}/{urls_to_scrape} fighters successfully scraped')
 

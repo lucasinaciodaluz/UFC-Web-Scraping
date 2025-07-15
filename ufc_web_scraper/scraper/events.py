@@ -5,6 +5,9 @@ import bs4
 import csv
 import os
 from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 #Creates a directory for scraped files if it doesn't already exist
 os.makedirs('scraped_files',exist_ok=True)
@@ -27,9 +30,9 @@ def create_csv_file():
                              'event_state',
                              'event_country',
                              'event_url'])
-        print('New File Created - ufc_event_data.csv')
+        logger.info('New File Created - ufc_event_data.csv')
     else:
-        print('Scraping to Existing File - ufc_event_data.csv')
+        logger.info('Scraping to Existing File - ufc_event_data.csv')
 
 #Ensure each url is only scraped once when script is run multiple times
 def filter_duplicate_urls(event_urls):
@@ -53,34 +56,37 @@ def scrape_events():
         with open(url_path + '/' + 'event_urls.csv','r') as events_csv:
             reader = csv.reader(events_csv)
             event_urls = [row[0] for row in reader]
+        logger.info(f'Loaded {len(event_urls)} event URLs from file')
     else:
-        print("Missing file - event_urls.csv. Try running 'get_urls.get_event_urls()'")
+        logger.error("Missing file - event_urls.csv. Try running 'get_urls.get_event_urls()'")
+        return
 
     #Removes urls that have been scraped already
     filter_duplicate_urls(event_urls)
  
     urls_to_scrape = len(event_urls)
-
+    logger.info(f'Found {urls_to_scrape} new events to scrape')
 
     if urls_to_scrape == 0:
-        print('Event data already scraped')
+        logger.info('Event data already scraped')
         
     else:
         create_csv_file()
 
-        print(f'Scraping {urls_to_scrape} event URLs...')
+        logger.info(f'Starting to scrape {urls_to_scrape} event URLs...')
         urls_scraped = 0
         
         with open(file_path + '/' + 'ufc_event_data.csv','a+') as csv_file:
             writer = csv.writer(csv_file)
         
             #Iterates through each event url to scrape key details
-            for event in event_urls:
-                event_request = requests.get(event)
-                event_soup = bs4.BeautifulSoup(event_request.text,'lxml')
-                event_full_location = event_soup.select('li')[4].text.split(':')[1].strip().split(',')
-
+            for i, event in enumerate(event_urls, 1):
                 try:
+                    logger.debug(f'Processing event {i}/{urls_to_scrape}: {event}')
+                    event_request = requests.get(event)
+                    event_soup = bs4.BeautifulSoup(event_request.text,'lxml')
+                    event_full_location = event_soup.select('li')[4].text.split(':')[1].strip().split(',')
+
                     event_name = event_soup.select('h2')[0].text
                     event_date = str(datetime.strptime(event_soup.select('li')[3].text.split(':')[-1].strip(), '%B %d, %Y'))
                     event_city = event_full_location[0]
@@ -91,21 +97,28 @@ def scrape_events():
                         event_state = event_full_location[1]
                     else:
                         event_state = 'NULL'
+                    
+                    #Adds new row to csv file
+                    writer.writerow([event_name.strip(), 
+                                     event_date[0:10], 
+                                     event_city.strip(), 
+                                     event_state.strip(), 
+                                     event_country.strip(), 
+                                     event])
+                    
                     urls_scraped += 1
+                    logger.debug(f'Successfully scraped event: {event_name.strip()}')
                         
                 except IndexError as e:
-                    print(f"Error scraping event page: {event}")
-                    print(f"Error details: {e}")
-                    
-
-                #Adds new row to csv file
-                writer.writerow([event_name.strip(), 
-                                 event_date[0:10], 
-                                 event_city.strip(), 
-                                 event_state.strip(), 
-                                 event_country.strip(), 
-                                 event])
+                    logger.error(f"IndexError scraping event page: {event} - {e}")
+                    continue
+                except requests.RequestException as e:
+                    logger.error(f"Request error for event: {event} - {e}")
+                    continue
+                except Exception as e:
+                    logger.error(f"Unexpected error scraping event: {event} - {e}")
+                    continue
                 
-            print(f'{urls_scraped}/{urls_to_scrape} events successfully scraped')
+            logger.info(f'{urls_scraped}/{urls_to_scrape} events successfully scraped')
             
 

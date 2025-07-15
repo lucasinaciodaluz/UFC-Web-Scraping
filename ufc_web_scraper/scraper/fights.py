@@ -4,6 +4,9 @@ import bs4
 import re
 import csv
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 #Define paths for url folder and scraped files folder
 url_path = os.getcwd() + '/urls'
@@ -29,9 +32,9 @@ def create_csv_file():
                              'finish_round', 
                              'finish_time', 
                              'fight_url'])
-        print('New File Created - ufc_fight_data.csv')
+        logger.info('New File Created - ufc_fight_data.csv')
     else:
-        print('Scraping to Existing File - ufc_fight_data.csv')
+        logger.info('Scraping to Existing File - ufc_fight_data.csv')
 
 #Ensure each url is only scraped once when script is run multiple times
 def filter_duplicate_urls(fight_urls):
@@ -83,7 +86,7 @@ def get_weight_class(fight_type):
         return 'Light Heavyweight'
         
     elif 'Women' in fight_type[0].text.strip():
-        return "Women's " + re.findall('\w*weight',fight_type[0].text.strip())[0]
+        return "Women's " + re.findall(r'\w*weight',fight_type[0].text.strip())[0]
         
     elif 'Catch Weight' in fight_type[0].text.strip():
         return 'Catch Weight'
@@ -93,7 +96,7 @@ def get_weight_class(fight_type):
             
     else:   
         try:
-            return re.findall('\w*weight',fight_type[0].text.strip())[0]
+            return re.findall(r'\w*weight',fight_type[0].text.strip())[0]
         except: 
             return 'NULL'
 
@@ -119,74 +122,85 @@ def scrape_fights():
         with open(url_path + '/' + 'fight_urls.csv','r') as fight_csv:
             reader = csv.reader(fight_csv)
             fight_urls = [row[0] for row in reader]
+        logger.info(f'Loaded {len(fight_urls)} fight URLs from file')
     else:
-        print("Missing file: fight_urls.csv - try running 'get_urls.get_fight_urls()'")
+        logger.error("Missing file: fight_urls.csv - try running 'get_urls.get_fight_urls()'")
+        return
 
     filter_duplicate_urls(fight_urls)
     
     urls_to_scrape = len(fight_urls)
+    logger.info(f'Found {urls_to_scrape} new fights to scrape')
     
     if urls_to_scrape == 0:
-        print('Fight data already scraped')
+        logger.info('Fight data already scraped')
         
     else:
         create_csv_file()
 
-        print(f'Scraping {urls_to_scrape} fights...')
+        logger.info(f'Starting to scrape {urls_to_scrape} fights...')
         urls_scraped = 0
     
         with open(file_path + '/' + 'ufc_fight_data.csv','a+') as csv_file:
             writer = csv.writer(csv_file)
         
-            for url in fight_urls:
+            for i, url in enumerate(fight_urls, 1):
+                try:
+                    logger.debug(f'Processing fight {i}/{urls_to_scrape}: {url}')
+                    fight_url = requests.get(url)
+                    fight_soup = bs4.BeautifulSoup(fight_url.text,'lxml')
 
-                fight_url = requests.get(url)
-                fight_soup = bs4.BeautifulSoup(fight_url.text,'lxml')
+                    #Define key select statements
+                    overview = fight_soup.select('i.b-fight-details__text-item')
+                    select_result = fight_soup.select('i.b-fight-details__text-item_first')
+                    select_result_details = fight_soup.select('p.b-fight-details__text')
+                    fight_details = fight_soup.select('p.b-fight-details__table-text')
+                    fight_type = fight_soup.select('i.b-fight-details__fight-title')
+                    win_lose = fight_soup.select('i.b-fight-details__person-status')
 
-                #Define key select statements
-                overview = fight_soup.select('i.b-fight-details__text-item')
-                select_result = fight_soup.select('i.b-fight-details__text-item_first')
-                select_result_details = fight_soup.select('p.b-fight-details__text')
-                fight_details = fight_soup.select('p.b-fight-details__table-text')
-                fight_type = fight_soup.select('i.b-fight-details__fight-title')
-                win_lose = fight_soup.select('i.b-fight-details__person-status')
-
-                #Scrape fight details
-                event_name = fight_soup.h2.text
-                referee = get_referee(overview)
-                f_1,f_2 = get_fighters(fight_details,fight_soup)
-                num_rounds = overview[2].text.split(':')[1].strip()[0]
-                title_fight = get_title_fight(fight_type)
-                weight_class = get_weight_class(fight_type)
-                gender = get_gender(fight_type)  
-                result,result_details = get_result(select_result,select_result_details)
-                finish_round = overview[0].text.split(':')[1]
-                finish_time = re.findall('\d:\d\d',overview[1].text)[0]
-                if (win_lose[0].text.strip()=='W') | (win_lose[1].text.strip()=='W'):
-                    if (win_lose[0].text.strip()=='W'):
-                        winner = f_1
+                    #Scrape fight details
+                    event_name = fight_soup.h2.text
+                    referee = get_referee(overview)
+                    f_1,f_2 = get_fighters(fight_details,fight_soup)
+                    num_rounds = overview[2].text.split(':')[1].strip()[0]
+                    title_fight = get_title_fight(fight_type)
+                    weight_class = get_weight_class(fight_type)
+                    gender = get_gender(fight_type)  
+                    result,result_details = get_result(select_result,select_result_details)
+                    finish_round = overview[0].text.split(':')[1]
+                    finish_time = re.findall(r'\d:\d\d',overview[1].text)[0]
+                    if (win_lose[0].text.strip()=='W') | (win_lose[1].text.strip()=='W'):
+                        if (win_lose[0].text.strip()=='W'):
+                            winner = f_1
+                        else:
+                            winner = f_2
                     else:
-                        winner = f_2
-                else:
-                    winner = 'NULL'
+                        winner = 'NULL'
 
-
-                #Adds row containing scraped fight details to csv file
-                writer.writerow([event_name.strip(),
-                                 referee.strip(), 
-                                 f_1.strip(), 
-                                 f_2.strip(), 
-                                 winner.strip(), 
-                                 num_rounds.strip(), 
-                                 title_fight,
-                                 weight_class, 
-                                 gender,
-                                 result.strip(), 
-                                 result_details.strip(), 
-                                 finish_round.strip(), 
-                                 finish_time.strip(), 
-                                 url])
-                
-                urls_scraped += 1
+                    #Adds row containing scraped fight details to csv file
+                    writer.writerow([event_name.strip(),
+                                     referee.strip(), 
+                                     f_1.strip(), 
+                                     f_2.strip(), 
+                                     winner.strip(), 
+                                     num_rounds.strip(), 
+                                     title_fight,
+                                     weight_class, 
+                                     gender,
+                                     result.strip(), 
+                                     result_details.strip(), 
+                                     finish_round.strip(), 
+                                     finish_time.strip(), 
+                                     url])
+                    
+                    urls_scraped += 1
+                    logger.debug(f'Successfully scraped fight: {f_1.strip()} vs {f_2.strip()}')
+                    
+                except requests.RequestException as e:
+                    logger.error(f'Request error for fight URL {url}: {e}')
+                    continue
+                except Exception as e:
+                    logger.error(f'Error processing fight URL {url}: {e}')
+                    continue
         
-        print(f'{urls_scraped}/{urls_to_scrape} links scraped successfully')
+        logger.info(f'{urls_scraped}/{urls_to_scrape} fight links scraped successfully')
